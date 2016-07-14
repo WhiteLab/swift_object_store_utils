@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 import sys
-import re
 from source_novarc import source_novarc
 from subprocess import check_output
-import subprocess
-import pdb
-from date_time import date_time
 if len(sys.argv) != 2:
     sys.stderr.write('Need .novarc file\n')
     exit(1)
@@ -25,15 +21,15 @@ def get_flavors():
     flava = flava.split('\n')
     flava_dict = {}
     for i in xrange(3, (len(flava) -2), 1):
-        cur = messy_string2list(line=flava[i])
-    try:
-        flava_dict[cur[1]] = {}
-        flava_dict[cur[1]]['mem'] = cur[2]
-        flava_dict[cur[1]]['eph'] = cur[4]
-        flava_dict[cur[1]]['cpu'] = cur[6]
-    except:
-        sys.stderr.write('Flavor list failed at ' + flava[i] + '\n')
-        exit(1)
+        try:
+            cur = messy_string2list(line=flava[i])
+            flava_dict[cur[1]] = {}
+            flava_dict[cur[1]]['mem'] = cur[2]
+            flava_dict[cur[1]]['eph'] = cur[4]
+            flava_dict[cur[1]]['cpu'] = cur[6]
+        except:
+            sys.stderr.write('Flavor list failed at ' + flava[i] + '\n')
+            exit(1)
     return flava_dict
 
 
