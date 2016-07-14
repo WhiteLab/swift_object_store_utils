@@ -26,14 +26,14 @@ def get_flavors():
     flava_dict = {}
     for i in xrange(3, (len(flava) -2), 1):
         cur = messy_string2list(line=flava[i])
-	try:
-            flava_dict[cur[1]] = {}
-            flava_dict[cur[1]]['mem'] = cur[2]
-            flava_dict[cur[1]]['eph'] = cur[4]
-            flava_dict[cur[1]]['cpu'] = cur[6]
-	except:
-	    sys.stderr.write('Flavor list failed at ' + flava[i] + '\n')
-	    exit(1)
+    try:
+        flava_dict[cur[1]] = {}
+        flava_dict[cur[1]]['mem'] = cur[2]
+        flava_dict[cur[1]]['eph'] = cur[4]
+        flava_dict[cur[1]]['cpu'] = cur[6]
+    except:
+        sys.stderr.write('Flavor list failed at ' + flava[i] + '\n')
+        exit(1)
     return flava_dict
 
 
@@ -49,6 +49,9 @@ def get_vms():
 
 
 def output_usage(flavors, vms):
+    tot_mem = 0
+    tot_cpu = 0
+    tot_eph = 0
     for vm in vms:
         cmd = 'nova show ' + vm
         cur = check_output(cmd, shell=True)
@@ -63,9 +66,12 @@ def output_usage(flavors, vms):
         name = messy_string2list(cur[20])
         name = name[1]
         sys.stderr.write('Getting info for ' + '\n')
-        sys.stdout.write('\t'.join((name, vm, cdate, key_name, flavor, flavors[flavor]['cpu'], flavors[flavor]['mem'],
-                                    flavors[flavor]['eph'])) + '\n')
-
+        (cpu, mem, eph) = (flavors[flavor]['cpu'], flavors[flavor]['mem'], flavors[flavor]['eph'])
+        sys.stdout.write('\t'.join((name, vm, cdate, key_name, flavor, cpu, mem, eph)) + '\n')
+        tot_cpu += int(cpu)
+        tot_mem += int(mem)
+        tot_eph += int(eph)
+    sys.stdout.write('TOTAL\tNA\tNA\tNA\tNA\t' + '\t'.join((tot_cpu, tot_mem, tot_eph)) + '\n')
 
 
 novarc = sys.argv[1]
