@@ -26,6 +26,7 @@ def get_flavors():
     flava_dict = {}
     for i in xrange(3, len(flava), 1):
         cur = messy_string2list(line=flava[i])
+        flava_dict[cur[1]] = {}
         flava_dict[cur[1]]['mem'] = cur[2]
         flava_dict[cur[1]]['eph'] = cur[4]
         flava_dict[cur[1]]['cpu'] = cur[6]
