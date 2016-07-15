@@ -22,7 +22,7 @@ def get_flavors():
     flava = check_output(cmd, shell=True)
     flava = flava.split('\n')
     flava_dict = {}
-    for i in xrange(3, (len(flava) -2), 1):
+    for i in xrange(3, (len(flava) - 2), 1):
         try:
             cur = messy_string2list(line=flava[i])
             flava_dict[cur[1]] = {}
