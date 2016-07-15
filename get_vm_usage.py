@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import re
 from source_novarc import source_novarc
 from subprocess import check_output
 if len(sys.argv) != 2:
@@ -8,10 +9,11 @@ if len(sys.argv) != 2:
 
 
 def messy_string2list(line):
-    line = line.replace('^\s+', '')
-    line = line.replace('\s+$', '')
-    cur = line.split('\|')
-    clean_list = cur.split()
+    clean_list = line.split('|')
+    clean_list.pop(0)
+    for i in xrange(0, len(clean_list), 1):
+        clean_list[i] = re.sub('^\s+', '', clean_list[i])
+        clean_list[i] = re.sub('\s+$', '', clean_list[i])
     return clean_list
 
 
@@ -61,13 +63,13 @@ def output_usage(flavors, vms):
         key_name = key_name[1]
         name = messy_string2list(cur[20])
         name = name[1]
-        sys.stderr.write('Getting info for ' + '\n')
+        sys.stderr.write('Getting info for ' + vm + ' ' + name + '\n')
         (cpu, mem, eph) = (flavors[flavor]['cpu'], flavors[flavor]['mem'], flavors[flavor]['eph'])
         sys.stdout.write('\t'.join((name, vm, cdate, key_name, flavor, cpu, mem, eph)) + '\n')
         tot_cpu += int(cpu)
         tot_mem += int(mem)
         tot_eph += int(eph)
-    sys.stdout.write('TOTAL\tNA\tNA\tNA\tNA\t' + '\t'.join((tot_cpu, tot_mem, tot_eph)) + '\n')
+    sys.stdout.write('TOTAL\tNA\tNA\tNA\tNA\t' + '\t'.join((str(tot_cpu), str(tot_mem), str(tot_eph))) + '\n')
 
 
 novarc = sys.argv[1]
