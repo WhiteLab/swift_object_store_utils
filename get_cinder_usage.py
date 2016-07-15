@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import re
 from source_novarc import source_novarc
 from subprocess import check_output
 if len(sys.argv) != 2:
@@ -8,10 +9,11 @@ if len(sys.argv) != 2:
 
 
 def messy_string2list(line):
-    line = line.replace('^\s+', '')
-    line = line.replace('\s+$', '')
-    cur = line.split('\|')
-    clean_list = cur.split()
+    clean_list = line.split('|')
+    clean_list.pop(0)
+    for i in xrange(0, len(clean_list), 1):
+        clean_list[i] = re.sub('^\s+', '', clean_list[i])
+        clean_list[i] = re.sub('\s+$', '', clean_list[i])
     return clean_list
 
 
