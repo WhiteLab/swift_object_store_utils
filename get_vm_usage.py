@@ -10,7 +10,7 @@ if len(sys.argv) != 2:
 def messy_string2list(line):
     line = line.replace('^\s+', '')
     line = line.replace('\s+$', '')
-    cur = line.split('|')
+    cur = line.split('\|')
     clean_list = cur.split()
     return clean_list
 
