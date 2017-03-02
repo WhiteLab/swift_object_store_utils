@@ -19,8 +19,8 @@ def setup_dirs(flist):
 def get_fqc_stats(bnids, cont, obj, novarc):
     source_novarc(novarc)
     flist = cont + '_fqc.txt'
-    get_list_cmd = 'cat ' + bnids + ' | xargs -IBN swift list ' + cont + ' ' + obj + '/BN/QC | grep  html | grep -v ' \
-                                                                          'report > ' + flist
+    get_list_cmd = 'cat ' + bnids + ' | xargs -IBN swift list ' + cont + ' --prefix ' + obj + '/BN/QC | grep  html | ' \
+                                                                                            'grep -v report > ' + flist
     sys.stderr.write(date_time() + get_list_cmd + '\n')
     subprocess.call(get_list_cmd, shell=True)
     sys.stderr.write(date_time() + 'Setting up dirs\n')
@@ -44,7 +44,6 @@ if __name__ == "__main__":
         description='Helper script to get fastqc files for variant viewer from object store')
     parser.add_argument('-b', '--bnids', action='store', dest='bnids', help='bnid list')
     parser.add_argument('-c', '--container', action='store', dest='cont', help='Swift container, i.e. PANCAN')
-    parser.add_argument('-c2', '--container2', action='store', dest='cont2', help='Backup container, i.e. PDX')
     parser.add_argument('-o', '--object', action='store', dest='obj',
                         help='Swift object name/prefix, i.e. RAW/2015-1234')
     parser.add_argument('-n', '--novarc', action='store', dest='novarc', help='.novarc with openstack authentication')
