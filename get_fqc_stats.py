@@ -25,7 +25,7 @@ def get_fqc_stats(bnids, cont, obj, novarc):
     subprocess.call(get_list_cmd, shell=True)
     sys.stderr.write(date_time() + 'Setting up dirs\n')
     setup_dirs(flist)
-    for path in flist:
+    for path in open(flist):
         path = path.rstrip('\n')
         bnid = path.split('/')[1]
         fn = os.path.basename(path)
